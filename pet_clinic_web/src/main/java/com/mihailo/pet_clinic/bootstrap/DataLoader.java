@@ -1,10 +1,7 @@
 package com.mihailo.pet_clinic.bootstrap;
 
 import com.mihailo.pet_clinic.model.*;
-import com.mihailo.pet_clinic.services.OwnerService;
-import com.mihailo.pet_clinic.services.PetTypeService;
-import com.mihailo.pet_clinic.services.SpecialityService;
-import com.mihailo.pet_clinic.services.VetService;
+import com.mihailo.pet_clinic.services.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -16,12 +13,14 @@ public class DataLoader implements CommandLineRunner {
     private final VetService vetService;
     private final PetTypeService petTypeService;
     private final SpecialityService specialityService;
+    private final VisitService visitService;
 
-    public DataLoader(OwnerService ownerService, VetService vetService, PetTypeService petTypeService, SpecialityService specialityService) {
+    public DataLoader(OwnerService ownerService, VetService vetService, PetTypeService petTypeService, SpecialityService specialityService, VisitService visitService) {
         this.ownerService = ownerService;
         this.vetService = vetService;
         this.petTypeService = petTypeService;
         this.specialityService = specialityService;
+        this.visitService = visitService;
     }
 
     @Override
@@ -75,6 +74,13 @@ public class DataLoader implements CommandLineRunner {
         owner2.getPets().add(cat1);
 
         ownerService.save(owner2);
+
+        Visit catVisit = new Visit();
+        catVisit.setPet(cat1);
+        catVisit.setDate(LocalDate.now());
+        catVisit.setDescription("Cat Visit Description. . .");
+
+        visitService.save(catVisit);
 
         Speciality radiology = new Speciality();
         radiology.setDescription("Radiology");
